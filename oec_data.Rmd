@@ -1,0 +1,64 @@
+---
+title: "oec_data"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(httr)
+library(rlist)
+library(jsonlite)
+library(dplyr)
+```
+
+```{r}
+names_products <- as.data.frame(fromJSON("https://oec.world/attr/sitc/"))
+glimpse(names_products)
+
+names_products<-
+  names_products%>%
+  select(data.id, data.name)
+
+names_products
+
+colnames(names_products)<- c("ID", "Product_Name")
+#us_china_trade$data.hs92_id
+
+#names_products$data.display_id
+```
+
+
+
+```{r}
+us_china_trade <- as.data.frame(fromJSON("https://oec.world/sitc/export/2016.2019/usa/all/show/"))
+unique(us_china_trade$Year)
+head(us_china_trade)
+
+us_china_trade<-
+  us_china_trade%>%
+  select(data.sitc_id, data.export_rca, data.export_val, data.export_val_growth_pct, data.export_val_growth_val, data.year)
+
+
+colnames(us_china_trade)<- c("ID", "Export_rca", "Export_val","Export_val_growth","Change_in_Exports","Year")
+```
+
+
+```{r}
+#join two datasets by #us_china_trade$data.hs92_id and names_products$data.display_id
+
+us_china_trade_names<-
+  us_china_trade%>%
+  left_join(names_products, by = c("ID"= "ID"))
+
+us_china_trade_names
+
+
+year_2016_sum<-
+  us_china_trade_names%>%
+  group_by(Year)%>%
+  summarize(ExportChangeTotal = sum(Export_val_growth,na.rm = TRUE), Total_Exports = sum(Export_val, na.rm = TRUE))
+
+year_2016_sum
+```
+
+

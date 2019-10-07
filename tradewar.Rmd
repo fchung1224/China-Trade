@@ -1,0 +1,55 @@
+---
+title: "investment project"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r, include = FALSE}
+library(ggplot2)
+library(dplyr)
+```
+
+```{r}
+
+#file.choose()  #Choose the files that you want
+csv<- read.csv(file = "C:\\Users\\stu_investment\\Downloads\\GTAP_tariff_aggregate.csv")
+
+csv
+
+US_China<-
+  csv%>%
+  filter(exporter == "USA", importer == "CHN")
+
+US_China # importer is China
+
+US_China_summ<-
+  US_China%>%
+  group_by(tariff_name,date,tariff_increase_)%>%
+  summarise(n_goods = n())
+
+US_China_summ
+
+China_US<-
+  csv%>%
+  filter(exporter == "CHN", importer =="USA")
+
+China_US # importer is US
+
+glimpse(csv)
+
+overall_increase<-
+  US_China%>%
+  group_by(date, tariff_name,tariff_increase_ )%>%
+  summarise(n_goods = n())%>%
+  arrange(date)
+
+overall_increase
+
+```
+
+
+
