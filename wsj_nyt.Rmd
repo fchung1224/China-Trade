@@ -16,6 +16,8 @@ library(jsonlite)
 library(RCurl)
 library(XML)
 library(RJSONIO)
+library(urltools)
+devtools::install_github("mkearney/nytimes")
 knitr::opts_chunk$set(tidy = FALSE, message=FALSE, cache.extra = packageVersion('tufte'))
 options(htmltools.dir.version = FALSE)
 ```
@@ -24,8 +26,28 @@ options(htmltools.dir.version = FALSE)
 
 #NEW YORK TIMES API
 
-
+##Data Collection
 ```{r}
+#API KEY
+key <-"b54a3d8a406247da96456b7bf62ca9ca"
 
 ```
+
+```{r}
+# Tell rtimes what our API key is
+Sys.setenv(NYTIMES_AS_KEY = key)
+```
+```{r}
+url <- "http://api.nytimes.com/svc/search/v2/articlesearch.json"
+url <- param_set(url, "q", url_encode("trade war"))
+url <- param_set(url, "api-key", url_encode(key))
+
+url
+```
+
+```{r}
+usc_nyt <- as.data.frame(fromJSON(url))
+
+```
+
 
