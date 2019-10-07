@@ -3,6 +3,19 @@ title: "index_indicators"
 output: html_document
 ---
 
+```{r, setup, include = FALSE}
+library(httr)
+library(rlist)
+library(jsonlite)
+library(dplyr)
+```
+
+
+#Index Wide Indicators
+
+
+#S&P 500
+
 ```{r}
 
 ```

@@ -16,7 +16,7 @@ library(dplyr)
 ```{r}
 
 #file.choose()  #Choose the files that you want
-csv<- read.csv(file = "C:\\Users\\stu_investment\\Downloads\\GTAP_tariff_aggregate.csv")
+csv<- read.csv(file = "GTAP_tariff_aggregate.csv")
 
 csv
 
@@ -48,7 +48,6 @@ overall_increase<-
   arrange(date)
 
 overall_increase
-
 ```
 
 

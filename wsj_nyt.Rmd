@@ -18,6 +18,7 @@ library(XML)
 library(RJSONIO)
 library(urltools)
 devtools::install_github("mkearney/nytimes")
+library(nytimes)
 knitr::opts_chunk$set(tidy = FALSE, message=FALSE, cache.extra = packageVersion('tufte'))
 options(htmltools.dir.version = FALSE)
 ```
@@ -28,26 +29,77 @@ options(htmltools.dir.version = FALSE)
 
 ##Data Collection
 ```{r}
+
 #API KEY
 key <-"b54a3d8a406247da96456b7bf62ca9ca"
 
+## make path to .Renviron
+file <- file.path(path.expand("~"), ".Renviron")
+
+## save environment variable
+cat(key, file = file, append = TRUE, fill = TRUE)
 ```
 
 ```{r}
 # Tell rtimes what our API key is
 Sys.setenv(NYTIMES_AS_KEY = key)
 ```
+
 ```{r}
 url <- "http://api.nytimes.com/svc/search/v2/articlesearch.json"
 url <- param_set(url, "q", url_encode("trade war"))
 url <- param_set(url, "api-key", url_encode(key))
-
-url
+url <- param_set(url, "page",0)
 ```
 
 ```{r}
-usc_nyt <- as.data.frame(fromJSON(url))
+res1 <- fromJSON(url)
+
+Sys.sleep(1)
+url <- param_set(url, "page", 1)
+res2 <- fromJSON(url)
+
+Sys.sleep(1)
+url <- param_set(url, "page", 2)
+res3 <- fromJSON(url)
+```
+
+```{r}
+docs1 <- res1$response$docs
+docs2 <- res2$response$docs
+docs3 <- res3$response$docs
+
+names(docs1)
+```
+
+```{r}
+url <- "http://api.nytimes.com/svc/search/v2/articlesearch.json"
+url <- param_set(url, "q", url_encode("Red Sox"))
+url <- param_set(url, "api-key", url_encode(key))
+url <- param_set(url, "page",0)
+res1 <- fromJSON(url)
+
+Sys.sleep(1)
+url <- param_set(url, "page", 1)
+res2 <- fromJSON(url)
+
+Sys.sleep(1)
+url <- param_set(url, "page", 2)
+res3 <- fromJSON(url)
+
+docs1 <- res1$response$docs
+docs2 <- res2$response$docs
+docs3 <- res3$response$docs
+```
+
+```{r}
+names(docs1)
 
 ```
+
+
+  
+
+
 
 
