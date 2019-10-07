@@ -1,0 +1,31 @@
+---
+title: "Sentimental Analysis of the Trade War with China"
+output: html_document
+---
+
+```{r, setup, include = FALSE}
+library(tidyverse)
+library(ggplot2)
+library(ggmap)
+library(lubridate)
+library(rvest)
+library(stringr)
+library(tidytext)
+library(wordcloud)
+library(jsonlite)
+library(RCurl)
+library(XML)
+library(RJSONIO)
+knitr::opts_chunk$set(tidy = FALSE, message=FALSE, cache.extra = packageVersion('tufte'))
+options(htmltools.dir.version = FALSE)
+```
+
+
+
+#NEW YORK TIMES API
+
+
+```{r}
+
+```
+
