@@ -72,8 +72,13 @@ write.csv(ny_trade_war, file = "NYT.csv")
 
 ```
 
+#Wall Street Journal API
 
+##Data Collection
 
+```{r}
+read.csv(file="trade_data_us_china.csv")
+```
 
 
 
