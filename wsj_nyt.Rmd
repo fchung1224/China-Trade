@@ -47,48 +47,21 @@ Sys.setenv(NYTIMES_AS_KEY = key)
 url <- "http://api.nytimes.com/svc/search/v2/articlesearch.json"
 url <- param_set(url, "q", url_encode("Trade War"))
 url <- param_set(url, "api-key", url_encode(key))
-url <- param_set(url, "page",0)
-res1 <- jsonlite::fromJSON(url)
 
-Sys.sleep(1)
-url <- param_set(url, "page", 1)
-res2 <- jsonlite::fromJSON(url)
+num_pages<-10
+merged_data<-tibble(web_url=rep(NA,num_pages*10),snippet=rep(NA,num_pages*10),lead_paragraph=rep(NA,num_pages*10),abstract=rep(NA,num_pages*10),pub_date=rep(NA,num_pages*10))
 
-Sys.sleep(1)
-url <- param_set(url, "page", 2)
-res3 <- jsonlite::fromJSON(url)
+for (k in 0:(num_pages-1)){
+  Sys.sleep(1)
+  url <- param_set(url, "page",k)
+  resk <- jsonlite::fromJSON(url)
+  docsk <- resk$response$docs%>%
+            select(web_url, snippet, lead_paragraph,abstract,pub_date)
+  merged_data[(1+k*10):((k+1)*10),]<-docsk  
+}
 
-docs1 <- res1$response$docs
-docs2 <- res2$response$docs
-docs3 <- res3$response$docs
-
-docs1<-
-  docs1%>%
-  select(web_url, snippet, lead_paragraph,abstract,pub_date)
-
-docs2<-
-  docs1%>%
-  select(web_url, snippet, lead_paragraph,abstract,pub_date)
-
-docs3<-
-  docs1%>%
-  select(web_url, snippet, lead_paragraph,abstract,pub_date)
-
-merged_data<- bind_rows(docs1, docs2, docs3)
-merged_data
 ```
 
-```{r}
-dat1<-data.frame(docs1$web_url,docs1$snippet,docs1$lead_paragraph,docs1$pub_date,docs1$headline, docs1$abstract)
-dat1
-dat2<-
-  docs2%>%
-  select(web_url, snippet, lead_paragraph, abstract, headline, pub_date)
-
-dat3<-
-  docs3%>%
-  select(web_url, snippet, lead_paragraph, abstract, headline, pub_date)
-```
 
 
 ```{r}
