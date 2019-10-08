@@ -74,7 +74,7 @@ names(docs1)
 
 ```{r}
 url <- "http://api.nytimes.com/svc/search/v2/articlesearch.json"
-url <- param_set(url, "q", url_encode("Red Sox"))
+url <- param_set(url, "q", url_encode("Trade War"))
 url <- param_set(url, "api-key", url_encode(key))
 url <- param_set(url, "page",0)
 res1 <- fromJSON(url)
@@ -93,8 +93,7 @@ docs3 <- res3$response$docs
 ```
 
 ```{r}
-names(docs1)
-
+docs1$keywords
 ```
 
 
