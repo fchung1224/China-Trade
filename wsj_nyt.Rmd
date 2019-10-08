@@ -1,5 +1,5 @@
 ---
-title: "Sentimental Analysis of the Trade War with China"
+title: "Data Collection NYT"
 output: html_document
 ---
 
@@ -44,42 +44,35 @@ Sys.setenv(NYTIMES_AS_KEY = key)
 
 
 ```{r}
+#Trade War
+
 url <- "http://api.nytimes.com/svc/search/v2/articlesearch.json"
 url <- param_set(url, "q", url_encode("Trade War"))
 url <- param_set(url, "api-key", url_encode(key))
 
 num_pages<-10
-merged_data<-tibble(web_url=rep(NA,num_pages*10),snippet=rep(NA,num_pages*10),lead_paragraph=rep(NA,num_pages*10),abstract=rep(NA,num_pages*10),pub_date=rep(NA,num_pages*10))
+ny_trade_war<-tibble(web_url=rep(NA,num_pages*10),snippet=rep(NA,num_pages*10),lead_paragraph=rep(NA,num_pages*10),abstract=rep(NA,num_pages*10),pub_date=rep(NA,num_pages*10))
 
-for (k in 0:(num_pages-1)){
+pages<-for (k in 0:(num_pages-1)){
   Sys.sleep(1)
   url <- param_set(url, "page",k)
   resk <- jsonlite::fromJSON(url)
   docsk <- resk$response$docs%>%
             select(web_url, snippet, lead_paragraph,abstract,pub_date)
-  merged_data[(1+k*10):((k+1)*10),]<-docsk  
+  ny_trade_war[(1+k*10):((k+1)*10),]<-docsk  
 }
-
+ny_trade_war
 ```
-
-
+#Analysis
 
 ```{r}
-#creating a function to collect all the data from NYtimes API
+#Us China
 
-"nytimes_data<- data.frame()
+write.csv(ny_trade_war, file = "NYT.csv")
 
-nytimesfunction<-
-  nytimescollector(n, )"
 ```
 
 
-```{r}
-docs1$keywords
-```
-
-
-  
 
 
 
