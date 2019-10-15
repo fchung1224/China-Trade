@@ -50,8 +50,13 @@ url <- "http://api.nytimes.com/svc/search/v2/articlesearch.json"
 url <- param_set(url, "q", url_encode("Trade War"))
 url <- param_set(url, "api-key", url_encode(key))
 
-num_pages<-10
-ny_trade_war<-tibble(web_url=rep(NA,num_pages*10),snippet=rep(NA,num_pages*10),lead_paragraph=rep(NA,num_pages*10),abstract=rep(NA,num_pages*10),pub_date=rep(NA,num_pages*10))
+res<- jsonlite::fromJSON(url)
+
+res$response$docs$headline
+
+num_pages<-20
+ny_trade_war<-tibble(web_url=rep(NA,num_pages*10),snippet=rep(NA,num_pages*10),lead_paragraph=rep(NA,num_pages*10),abstract=rep(NA,num_pages*10),pub_date=rep(NA,num_pages*010))
+header_ny_trade_war<-tibble(main = rep(NA, num_pages*10), print_headline = rep(NA, num_pages*10))
 
 pages<-for (k in 0:(num_pages-1)){
   Sys.sleep(1)
@@ -59,17 +64,41 @@ pages<-for (k in 0:(num_pages-1)){
   resk <- jsonlite::fromJSON(url)
   docsk <- resk$response$docs%>%
             select(web_url, snippet, lead_paragraph,abstract,pub_date)
-  ny_trade_war[(1+k*10):((k+1)*10),]<-docsk  
+  ny_trade_war[(1+k*10):((k+1)*10),]<-docsk 
+  headerk <- resk$response$docs$headline%>%
+    select(main, print_headline)
+  header_ny_trade_war[(1+k*10):((k+1)*10),]<-headerk
+  
 }
 ny_trade_war
+header_ny_trade_war
+
+nyt<-cbind(header_ny_trade_war,ny_trade_war)
+
+nyt
 ```
+
 #Analysis
 
 ```{r}
 #Us China
+ny_trade_war
 
-write.csv(ny_trade_war, file = "NYT.csv")
+final<- na.omit(ny_trade_war)
 
+
+write.csv(final, file = "NYT_final.csv")
+
+```
+
+```{r}
+url <- "http://api.nytimes.com/svc/search/v2/articlesearch.json"
+url <- param_set(url, "q", url_encode("Trade War"))
+url <- param_set(url, "api-key", url_encode(key))
+
+res<- jsonlite::fromJSON(url)
+
+res$response$docs$headline$print_headline
 ```
 
 #Wall Street Journal API
