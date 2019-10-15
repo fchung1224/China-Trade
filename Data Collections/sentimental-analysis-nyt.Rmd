@@ -1,0 +1,39 @@
+---
+title: "analysing_nyt"
+output: html_document
+---
+
+```{r, setup, include = FALSE}
+library(tidyverse)
+library(ggplot2)
+library(ggmap)
+library(lubridate)
+library(rvest)
+library(stringr)
+library(tidytext)
+library(wordcloud)
+library(jsonlite)
+library(RCurl)
+library(XML)
+library(RJSONIO)
+library(urltools)
+library(tidytext)
+options(htmltools.dir.version = FALSE)
+```
+
+
+
+
+```{r}
+nyt<-read.csv("NYT.csv")
+
+
+abstract_af <- data_frame(text = nyt$abstract, header = afghanistan_abstract_na$header)
+
+```
+
+```{r}
+tidy_nyt <- stuff %>%
+  unnest_tokens(word, text)
+```
+
