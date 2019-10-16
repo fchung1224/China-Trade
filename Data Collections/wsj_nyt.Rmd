@@ -89,6 +89,8 @@ final<- na.omit(ny_trade_war)
 
 write.csv(final, file = "NYT_final.csv")
 
+write.csv(nyt, file = "FINAL_FINAL_NYT.csv")
+
 ```
 
 ```{r}
