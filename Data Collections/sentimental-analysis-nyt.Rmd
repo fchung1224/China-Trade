@@ -25,11 +25,13 @@ options(htmltools.dir.version = FALSE)
 
 
 ```{r}
-nyt<-read.csv("NYT.csv")
+nyt<-read.csv("FINAL_FINAL_NYT.csv")
 
+names(nyt)
 
-abstract_af <- data_frame(text = nyt$abstract, header = afghanistan_abstract_na$header)
+abstract_usch <- data_frame(text = nyt$abstract, header = nyt$print_headline)
 
+abstract_usch
 ```
 
 ```{r}
