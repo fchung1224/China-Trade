@@ -1,0 +1,39 @@
+---
+title: "trade_data_vis"
+output: html_document
+---
+
+```{r, include = FALSE}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+```
+
+
+```{r}
+trade<- read.csv("trade_data_us_china.csv")
+
+trade
+```
+
+```{r}
+library(anytime)
+
+new_trade<-
+  trade%>%
+  gather(key = date, value = val, names(trade%>%
+                                          select(-c(Commodity))))
+
+
+
+new_trade1<-
+  new_trade%>%
+  separate("date", c("Month","Year"))%>%
+  mutate(Month = substr(Month,0,3))%>%
+  mutate(Month = match(Month, month.abb))%>%
+  mutate(Date = Month,"/",Year ##FIXX
+
+new_trade1
+
+```
+
