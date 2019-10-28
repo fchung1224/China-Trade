@@ -31,9 +31,77 @@ new_trade1<-
   separate("date", c("Month","Year"))%>%
   mutate(Month = substr(Month,0,3))%>%
   mutate(Month = match(Month, month.abb))%>%
-  mutate(Date = Month,"/",Year ##FIXX
+  mutate(Date = paste("01" ,as.character(Month) ,as.character(Year),sep="/"))%>%
+  mutate(Date = as.Date(Date, tryFormats ="%d/%m/%Y"))%>%
+  mutate(val = as.numeric(gsub(",","",val)))
 
-new_trade1
+LiveAnimals<-
+  new_trade%>%
+  filter(Commodity == "01 Live Animals")
+
+Total<-
+  new_trade1%>%
+  group_by(Date)%>%
+  summarize(value = sum(val,na.rm = TRUE))
+
+Total
+#total amount of exports to china 2015 onwards
 
 ```
+```{r}
+#Trade Visualization
+Trade_Vis <- ts(Total$value, start = c(2015,01,01), frequency = 12)
+
+lag(Total$value, 1)
+plot(Trade_Vis)
+```
+```{r}
+#Trade Visualization
+Trade_Vis <- ts(Total$value, start = c(2015,01,01), frequency = 12)
+
+lag(Total$value, 1)
+plot(Trade_Vis)
+```
+
+
+```{r}
+#other visualizations
+
+Total_change<-
+  Total%>%
+  mutate(lag1 = lag(value,1))%>%
+  mutate(perc_change = (value - lag1)/value*100)
+Total_change
+
+ggplot(Total_change,aes(x = Date, y = perc_change))+
+  geom_col()
+```
+```{r}
+#
+new_trade1_percchange<-
+  new_trade1%>%
+  mutate(lag1 = lag(val,98))%>%
+  mutate(perc_change = (val - lag1)/val)
+
+new_trade1_percchange
+date1<- as.Date("2017-03-31", tryFormats = "%Y-%m-%d")
+
+#add the percentage changes 
+
+study<-
+  new_trade1_percchange%>%
+  filter(Date> date1)%>%
+  group_by(Commodity)%>%
+  summarize(change = mean(perc_change))
+```
+
+
+```{r}
+study%>%
+  arrange((change))%>%
+  head(10)
+
+
+```
+
 
