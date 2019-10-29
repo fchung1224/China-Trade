@@ -133,7 +133,19 @@ plot(Trade_Vis)
 ggplot(Total, aes(x = Date, y = value))+
   geom_line()
 
-loess<-loess(value, data = Total, span = 0.10)
+trade
+
+trade%>%
+  filter(Commodity=="01 Live Animals")%>%
+  ggplot(aes(x = Date, y =val))+
+           geom_line()+
+  ylim(0,20000000)
+
+trade%>%
+  filter(Commodity=="02 Meat And Edible Meat Offal")%>%
+  ggplot(aes(x = Date, y =val))+
+           geom_line()+
+  ylim(0,200000000)
 
 ```
 
