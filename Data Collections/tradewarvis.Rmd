@@ -94,14 +94,46 @@ study<-
   group_by(Commodity)%>%
   summarize(change = mean(perc_change))
 ```
+### Expanded Time Frame
 
 
 ```{r}
-study%>%
-  arrange((change))%>%
-  head(10)
-
-
+trade<- read.csv("2002-2019_us_china_trade.csv")
+trade_total<- read.csv("2002-2019_us_china_trade_total.csv")
 ```
 
+```{r}
+names(trade)<- c("Time", "Commodity", "val")
+
+trade<-trade%>%
+  separate("Time", c("Month","Year"))%>%
+  mutate(Month = substr(Month,0,3))%>%
+  mutate(Month = match(Month, month.abb))%>%
+  mutate(Year = as.numeric(Year) + 2000)%>%
+  mutate(Date = paste("01" ,as.character(Month) ,as.character(Year),sep="/"))%>%
+  mutate(Date = as.Date(Date, tryFormats ="%d/%m/%Y"))%>%
+  mutate(val = as.numeric(gsub(",","",val)))
+  
+
+
+Total<-
+  trade%>%
+  group_by(Date)%>%
+  summarize(value = sum(val,na.rm = TRUE))
+
+
+Total<-Total[-nrow(Total),]
+Total
+```
+```{r}
+Trade_Vis <- ts(Total$value, start = c(2002,01,01), frequency = 12)
+
+plot(Trade_Vis)
+
+ggplot(Total, aes(x = Date, y = value))+
+  geom_line()
+
+loess<-loess(value, data = Total, span = 0.10)
+
+```
 
