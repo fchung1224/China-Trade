@@ -126,15 +126,19 @@ Total<-Total[-nrow(Total),]
 Total
 ```
 ```{r}
+Trump<- as.Date("2017-03-01")
 Trade_Vis <- ts(Total$value, start = c(2002,01,01), frequency = 12)
 
 plot(Trade_Vis)
 
 ggplot(Total, aes(x = Date, y = value))+
-  geom_line()
+  geom_line()+
+  geom_vline(xintercept = Trump, color = "red")
 
 trade
+```
 
+```
 trade%>%
   filter(Commodity=="01 Live Animals")%>%
   ggplot(aes(x = Date, y =val))+
@@ -148,4 +152,53 @@ trade%>%
   ylim(0,200000000)
 
 ```
+
+```{r}
+#withouttradewar\
+library(lubridate)
+Trump<- as.Date("2017-03-01")
+
+without_war<-
+  Total%>%
+  filter(Date<Trump)%>%
+  mutate(dec_date = decimal_date(Date))
+
+with_war<-
+  Total%>%
+  filter(Date>Trump)%>%
+  mutate(dec_date = decimal_date(Date))
+```
+
+```{r}
+LOESS <- loess(value ~ dec_date, data = without_war, span = 0.15)
+
+predict(LOESS,newdata = without_war$dec_date)
+
+stuff<-
+  Total%>%
+  filter(Date<Trump)%>%
+  mutate(dec_date = decimal_date(Date))
+
+ggplot(stuff, aes(x = Date, y = value))+
+  geom_line()+
+  geom_vline(xintercept = Trump, color = "green")+
+  geom_line(aes(x = Date, y =LOESS$fitted ), color = "red")
+
+
+library(forecast)
+library(TTR)
+ggplot(data = stuff)+
+  geom_line(aes(x =dec_date, y= value))+
+  geom_line(aes(y = SMA(value,3), x = dec_date), color = "red")
+
+
+export_data_components<- decompose(Trade_Vis)
+
+plot(export_data_components)
+```
+
+```{r}
+
+```
+
 
