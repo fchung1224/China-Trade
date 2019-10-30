@@ -198,7 +198,15 @@ plot(export_data_components)
 ```
 
 ```{r}
+plot(Trade_Vis)
+diff1<- diff(Trade_Vis, differences = 1)
+plot(diff1)
 
+
+diff2<- diff(export_data_components$random, differences = 1)
+plot(diff2)
+
+acf(as.ts(diff2))
 ```
 
 
