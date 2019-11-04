@@ -10,6 +10,53 @@ library(tidyr)
 ```
 
 ```{r}
-
+data<-read.csv("trade_comm.csv")
 ```
+
+```{r}
+new_data<-data%>%
+  mutate(Date= as.Date(Date))%>%
+  mutate(Commodity = substr(Commodity,start =3,stop = length(Commodity)))
+
+header.true <- function(df) {
+  names(df) <- as.character(unlist(df[1,]))
+  df[-1,]
+}
+
+hs_code<-read.csv("hs_code.csv")
+
+hs_code1<-header.true(hs_code)
+
+hs_code2<-hs_code1[-1,]
+
+hs_code2
+```
+
+```{r}
+Live_animals<- hs_code2[1:47,]
+library(stringr)
+
+  stuff<-hs_code2%>%
+  mutate(number = gsub("[^0-9.]", "",  Date),
+         size= nchar(number))%>%
+    filter(size ==2| size ==4)
+
+  
+  stuff1<-
+    stuff%>%
+    select(-number)
+  
+hs_codes<-stuff%>%
+  select(Date,number)
+names(hs_codes)<- c("Product", "number")
+
+  hs_codes1<-
+    hs_codes%>%
+  mutate(Commodity = gsub("[!^0-9]"," ",Product))%>%
+    select(Commodity, number)
+  
+
+  hs_codes1
+```
+
 
