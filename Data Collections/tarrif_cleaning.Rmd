@@ -1,0 +1,108 @@
+---
+title: "tariff_cleaning"
+output: html_document
+---
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+```
+
+```{r}
+tariff_index<-read.csv("tariffindex.csv")
+
+CHN_tariffs<-tariff_index%>%
+  filter(exporter=="USA",importer == "CHN")%>%
+  mutate(imposed_by = "CHN")
+
+USA_tariffs<-tariff_index%>%
+  filter(exporter=="CHN",importer =="USA")%>%
+  mutate(imposed_by = "USA")
+
+CHN_tariffs
+USA_tariffs
+
+dates_tariffs<-
+  rbind(CHN_tariffs,USA_tariffs)
+
+dates_tariffs1<-
+  dates_tariffs%>%
+  select(tariff_name,date,imposed_by)
+```
+
+
+```{r}
+gtap_tariff_aggregate<-read.csv("GTAP_tariff_aggregate.csv")
+
+gtap_tariff_aggregate$date<-as.factor(gtap_tariff_aggregate$date)
+
+gtap_tariff_aggregate
+
+h6_tariff<-read.csv("h6_tariff.csv")
+hs_gtap<-read.csv("hs_gtap.csv")
+tariff_index<-read.csv("tariffindex.csv")
+dates_names<-read.csv("dates_names.csv")
+
+index_tarrifs<-read.csv("index_tariff.csv")
+
+h6_tariff
+```
+
+
+```{r}
+#GTAP INDEX
+new<-h6_tariff%>%
+  gather(key = tariff, value = tarrif_increase, -hs6)
+
+new<-new%>%
+  separate(tariff, into = c("Tariff",
+                            "x","y"))%>%
+  select(-c(x,y))
+
+dates_tariffs1
+
+final<-new%>%
+  left_join(dates_tariffs1,by = c("Tariff"="tariff_name"))
+
+final<-na.omit(final)
+
+write.csv(final,"tariff.csv")
+
+unique(final$Tariff)
+
+```
+
+
+
+```{r}
+
+is_na <- final[is.na(final$date),]
+  
+
+unique(new$tariff)
+hs_gtap
+gtap_index<-hs_gtap%>%
+  select(hs6,GTAP_commodity)
+```
+
+
+
+```{r}
+
+gtap_tariff_aggregate
+Chinese_tariffs<-gtap_tariff_aggregate%>%
+  filter(exporter == "USA", importer == "CHN")%>%
+  left_join(index_tarrifs,by = c("tariff_name","tariff_name"))%>%
+  select(gtap,tariff_name, tariff_increase_,exporter,importer,descrip,description)
+
+Chinese_tariffs
+
+US_tariffs<-gtap_tariff_aggregate%>%
+  filter(exporter == "CHN", importer == "USA")%>%
+  left_join(index_tarrifs,by = c("tariff_name","tariff_name"))%>%
+  select(gtap,tariff_name, tariff_increase_,exporter,importer,descrip,description)
+
+US_tariffs
+```
+

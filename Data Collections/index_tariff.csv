@@ -1,0 +1,22 @@
+tariff_name,descrip,date,,description
+chn3,China 3b ,20180402,,China's tariff increase in the 3 billion round
+chn34,China 50b wave 1,20180706,,China's tariff increase (implemented) in the first wave of the 50 billion round
+chn16,China 50b wave 2,20180808,,China's tariff increase (pending) in the second wave of the 50 billion round
+uscn34,US_CN 50b wave 1,20180706,,US tariff increase (implemented) in the first wave of the 50 billion round
+uscn16,US_CN 50b wave 2,20180808,,US tariff increase (implemented) in the second wave of the 50 billion round
+chn60b1,chn60b_tariff_increase1,20180918,,China's 60 billion tariff on US imports (first increase)
+chn60b2,chn60b_tariff_increase2,20190513,,China's 60 billion tariff on US imports (second increase)
+us200b1,US200b_tariff_increase,20180918,,US 200 billion tariff increase on Chinese products (first increase)
+us300b1,US300b_tariff_increase1,20190901,,US 300 billion tariff increase on Chinese product (first increase)
+US300b2,US300b_tariff_increase2,pending,,US 300 billion tariff increase on Chinese product (second increase)
+chn75b1,chn75b_tariff_increases1,20190901,,"China's retaliation for US 300 billion tariff, effective 09/01/2019"
+chn75b2,chn75b_tariff_increases2,pending,,"China's retaliation for US 300 billion tariff, effective 12/15/2019"
+us_cn_sa,US steel aluminum ,"20180323 (non_exempted countries), 20180601 (EU, Mexico, Canada)",,"US tariff increase on steel and aluminum from China, Canada, Mexico, and EU (See quota for other countries below)"
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
