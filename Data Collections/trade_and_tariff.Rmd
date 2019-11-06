@@ -1,0 +1,30 @@
+---
+title: "Untitled"
+author: "Federico Chung"
+date: "11/6/2019"
+output: html_document
+---
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+```
+
+```{r}
+tariff<-read.csv("tariff.csv")
+trade<-read.csv("exports.csv")
+yearly<-read.csv("yearlyexports.csv")
+```
+
+```{r}
+tariff
+
+imposed_by_CHN<-
+  tariff%>%
+  filter(imposed_by =="CHN")
+
+imposed_by_CHN<-imposed_by_CHN%>%
+  mutate(hs6= ifelse(nchar(hs6)==5,paste("0",hs6,sep="") ,hs6))
+```
+
