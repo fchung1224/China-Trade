@@ -46,6 +46,8 @@ library(stringr)
     stuff%>%
     select(-number)
   
+stuff
+  
 hs_codes<-stuff%>%
   select(Date,number)
 names(hs_codes)<- c("Product", "number")
@@ -59,4 +61,51 @@ names(hs_codes)<- c("Product", "number")
   hs_codes1
 ```
 
+```{r}
+hs_codes1
+
+
+as<-  stuff%>%
+  left_join(hs_codes1)
+
+as<-as%>%
+  select(-Date)
+
+stuff
+new<-as%>%
+  gather(key = Date, value = value, c(-number,-size,-Commodity))
+
+
+unique(new$Date)
+
+important_dates<-new%>%
+  group_by(Date)%>%
+  summarize(n())%>%
+  mutate(nchar = nchar(Date))%>%
+  filter(nchar != 4,nchar!=19)
+
+
+important_dates<-important_dates%>%select(Date)
+
+years<- new%>%
+  anti_join(important_dates)
+
+
+important_dates
+
+new1<-new%>%
+  semi_join(important_dates)
+
+asd<-new1%>%
+  separate(Date,into = c("Month","Year"))%>%
+  mutate(Month = substr(Month,0,3))%>%
+  mutate(Month = match(Month, month.abb))%>%
+  mutate(Date = paste("01" ,as.character(Month) ,as.character(Year),sep="/"))%>%
+  mutate(Date = as.Date(Date, tryFormats ="%d/%m/%Y"))%>%
+  mutate(value = as.numeric(gsub(",","",value)))
+
+write.csv(asd,"exports.csv")
+
+write.csv(years,"yearlyexports.csv")
+```
 

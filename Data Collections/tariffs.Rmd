@@ -1,0 +1,47 @@
+---
+title: "tariffs"
+output: html_document
+---
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+```
+
+```{r}
+tariff<-read.csv("tariff.csv")
+
+exports<-read.csv("exports.csv")
+
+exports<-exports%>%
+  mutate(number = as.character(number))
+
+tariffs_us_products<-
+  tariff%>%
+  filter(imposed_by =="CHN")
+
+tariffs_us_products%>%
+  mutate(hs6 = as.character(hs6))%>%
+  mutate(hs4 = substr(hs6, start = 1,stop =4))%>%
+  mutate(hs2 = substr(hs6, start = 1, stop = 2))
+
+year_exports<-read.csv("yearlyexports.csv")
+
+year2015<-year_exports%>%
+  filter(Date =="2015")
+
+
+tariffs_us_products
+
+
+tariffs_us_products%>%
+  left_join(year2015)
+```
+```{r}
+#us exports to china by hs code
+exports%>%
+  filter(Year ==2015)
+```
+
+
