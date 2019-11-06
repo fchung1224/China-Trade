@@ -27,6 +27,8 @@ options(htmltools.dir.version = FALSE)
 ```{r}
 nyt<-read.csv("FINAL_FINAL_NYT.csv")
 
+View(nyt)
+
 names(nyt)
 
 abstract_usch <- data_frame(text = nyt$abstract, header = nyt$print_headline)

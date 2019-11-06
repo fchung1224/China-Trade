@@ -13,7 +13,7 @@ library(tidyr)
 
 ```{r}
 tariff<-read.csv("tariff.csv")
-trade<-read.csv("exports.csv")
+exports<-read.csv("exports.csv")
 yearly<-read.csv("yearlyexports.csv")
 ```
 
@@ -26,5 +26,34 @@ imposed_by_CHN<-
 
 imposed_by_CHN<-imposed_by_CHN%>%
   mutate(hs6= ifelse(nchar(hs6)==5,paste("0",hs6,sep="") ,hs6))
+```
+
+```{r}
+View(exports)
+View(tariff)
+
+tariff<-tariff%>%
+  mutate(date = as.character(date))%>%
+  mutate(Year = substr(date, start = 1, stop =4),
+         Month = substr(date, start = 5, stop = 6),
+         Day = substr(date, start = 7, stop = 8),
+         Date = paste(Year, Month, Day, sep = "/"),
+         Date = as.Date(Date, tryFormats = "%Y/%m/%d"))
+
+exports<-
+  exports%>%
+  mutate(Date = as.Date(Date))
+
+
+exports
+tariff<-
+  tariff%>%
+  mutate(Year = as.numeric(Year),
+         Month = as.numeric(Month))
+
+
+tariff_exports_US<-
+  tariff%>%
+  left_join(exports, by = c("Year","Month"))
 ```
 
