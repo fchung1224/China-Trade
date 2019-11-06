@@ -191,7 +191,7 @@ ggplot(data = stuff)+
   geom_line(aes(x =dec_date, y= value))+
   geom_line(aes(y = SMA(value,3), x = dec_date), color = "red")
 
-
+Trade_Vis
 export_data_components<- decompose(Trade_Vis)
 
 plot(export_data_components)
