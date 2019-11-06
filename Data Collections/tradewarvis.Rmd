@@ -114,7 +114,11 @@ trade<-trade%>%
   mutate(Date = as.Date(Date, tryFormats ="%d/%m/%Y"))%>%
   mutate(val = as.numeric(gsub(",","",val)))
   
+trade<-
+  trade%>%
+  mutate(Commodity = substr(Commodity,start =3,stop = length(Commodity)))
 
+write.csv(trade,"trade_comm.csv")
 
 Total<-
   trade%>%
@@ -199,7 +203,7 @@ plot(export_data_components)
 
 ```{r}
 plot(Trade_Vis)
-diff1<- diff(Trade_Vis, differences = 1)
+diff1<- diff(Trade_Vis, differences = 1, lag =1)
 plot(diff1)
 
 
