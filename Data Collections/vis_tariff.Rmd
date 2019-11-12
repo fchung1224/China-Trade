@@ -21,19 +21,101 @@ export_tariff<-export_tariff%>%
 
 ```{r}
 export_tariff<-export_tariff%>%
-  arrange(desc(effective_tariff))%>%
-  mutate(perc_tariff= effective_tariff*100)%>%
+  mutate(perc_change_tariff= effective_tariff*100)%>%
   mutate(Date = as.Date(Date))
+
+
+colnames(export_tariff)<-c("X","hs4","Tariff","imposed_by","Date","effective_tariff_increase","perc_change_tariff")
+
+export_tariff
+
+chn16<-export_tariff%>%
+  filter(Tariff == "chn16")%>%
+  group_by(hs4)%>%
+  summarise(effective_tariff = sum(effective_tariff_increase))%>%
+  mutate(Tariff = "chn16")
+
+chn16
+
+chn3<-
+  export_tariff%>%
+  filter(Tariff == "chn16"|Tariff =="chn3")%>%
+  group_by(hs4)%>%
+  summarize(effective_tariff = sum(effective_tariff_increase))%>%
+  mutate(Tariff = "chn3")
+
+
+  chn34<-export_tariff%>%
+  filter(Tariff == "chn16"|Tariff =="chn3"|Tariff == "chn34")%>%
+  group_by(hs4)%>%
+  summarize(effective_tariff = sum(effective_tariff_increase))%>%
+  mutate(Tariff = "chn34")
+  
+  chn60b1<-export_tariff%>%
+  filter(Tariff == "chn16"|Tariff =="chn3"|Tariff == "chn34"|Tariff =="chn60b1")%>%
+  group_by(hs4)%>%
+  summarize(effective_tariff = sum(effective_tariff_increase))%>%
+  mutate(Tariff = "chn60b1")
+  
+  chn60b2<-export_tariff%>%
+  filter(Tariff == "chn16"|Tariff =="chn3"|
+           Tariff == "chn34"|Tariff =="chn60b1"|Tariff=="chn60b2")%>%
+  group_by(hs4)%>%
+  summarize(effective_tariff = sum(effective_tariff_increase))%>%
+  mutate(Tariff = "chn60b2")
+  
+  chn75b1<-export_tariff%>%
+  filter(Tariff == "chn16"|Tariff =="chn3"|
+           Tariff == "chn34"|Tariff =="chn60b1"|Tariff=="chn60b2"|
+           Tariff == "chn75b1")%>%
+  group_by(hs4)%>%
+  summarize(effective_tariff = sum(effective_tariff_increase))%>%
+  mutate(Tariff = "chn75b1")
+  
+chn75b2<-export_tariff%>%
+  group_by(hs4)%>%
+    summarize(effective_tariff = sum(effective_tariff_increase))%>%
+    mutate(Tariff = "chn75b2")
+
+
+a<-rbind(chn16,chn3,chn34,chn60b1,chn60b2,chn75b1,chn75b2)
+
+
+final<-export_tariff%>%
+  left_join(a)
+
+final%>%
+  filter(hs4 =="0101"|hs4 =="0202")%>%
+  ggplot(aes(x = Date, y = effective_tariff, color = hs4))+
+  geom_point()+
+  geom_line()+
+  ylim(0,1)
 ```
 
 ```{r}
-export_tariff%>%
-  filter(hs4 =="0101")
+export_tariff
 
 export_tariff%>%
-  filter(hs4 =="0101")%>%
-  ggplot(aes(x = Date, y = perc_tariff))+
+  filter(hs4 =="0101"|hs4 =="0202")%>%
+  ggplot(aes(x = Date, y = perc_change_tariff, color = hs4))+
   geom_point()+
   geom_smooth()
 ```
+```{r}
+hs_index<-
+  read.csv("hs_index.csv")
+
+hs_index_1<-hs_index%>%
+  filter(Tier == 2)%>%
+  select(hs4,Product.Description)
+
+hs_index_2<-
+  hs_index%>%
+  filter(Tier == 1)%>%
+  select(hs4,Product.Description)
+
+colnames(hs_index_2)<-
+  c("hs2","TIER 1 DESCRIPTION")
+```
+
 
