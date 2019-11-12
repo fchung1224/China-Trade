@@ -1,0 +1,90 @@
+---
+title: "clean_exports_and_tarifs_final"
+output: html_document
+---
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(stringr)
+```
+
+```{r}
+tariff<-read.csv("tariff.csv")
+exports<-read.csv("exports.csv")
+```
+
+
+```{r}
+tariff<-tariff%>%
+  mutate(date = as.character(date))%>%
+  mutate(Year = substr(date, start = 1, stop =4),
+         Month = substr(date, start = 5, stop = 6),
+         Day = substr(date, start = 7, stop = 8),
+         Date = paste(Year, Month, Day, sep = "/"),
+         Date = as.Date(Date, tryFormats = "%Y/%m/%d"))
+remove<-exports%>%
+  filter(str_detect(hs6, pattern = "[.]"))
+
+exports<-
+  exports%>%
+  anti_join(remove)
+
+exports
+exp_2015<-exports%>%
+  filter(Year == 2015)%>%
+  group_by(hs6,Year)%>%
+  summarize(yearly_exp = sum(value))%>%
+  mutate(hs4 = substr(hs6, start =1, stop=4))
+
+exp_total<-exp_2015%>%
+  mutate(hs4 = substr(hs6, start =1, stop=4))%>%
+  group_by(hs4)%>%
+  summarize(sum_exp= sum(yearly_exp))
+```
+
+```{r}
+export_weights<-exp_2015%>%
+  left_join(exp_total)%>%
+  filter(sum_exp>0)%>%
+  mutate(export_weight = yearly_exp/sum_exp)%>%
+  select(hs6,hs4,export_weight)
+
+export_weights
+```
+
+```{r}
+export_final<-exports%>%
+  select(hs6,Date,value)%>%
+  left_join(export_weights)
+
+export_final<- na.omit(export_final)
+
+
+tariff_on_exports<-tariff%>%
+  filter(imposed_by=="CHN")%>%
+  select(hs6,Tariff,tarrif_increase,imposed_by,Date)%>%
+  mutate(hs6= ifelse(nchar(hs6)==5,paste("0",hs6,sep="") ,hs6))
+
+
+tariff_on_exports
+export_weights
+
+export_tariff<-export_weights%>%
+  left_join(tariff_on_exports)
+
+export_tariff<-na.omit(export_tariff)
+
+export_tariff_final<-
+  export_tariff%>%
+  mutate(effective_tariff= export_weight*tarrif_increase)%>%
+  group_by(hs4,Tariff,imposed_by,Date)%>%
+  summarize(effective_tariff = sum(effective_tariff))
+```
+
+```{r}
+write.csv(export_tariff_final,"export_tariff_final.csv")
+```
+
+

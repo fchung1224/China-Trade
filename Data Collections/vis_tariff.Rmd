@@ -1,0 +1,38 @@
+---
+title: "tariff_visualization"
+output: html_document
+---
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(stringr)
+```
+
+```{r}
+export_tariff<-read.csv("export_tariff_final.csv")
+```
+
+```{r}
+export_tariff<-export_tariff%>%
+  mutate(hs4= ifelse(nchar(hs4)==3,paste("0",hs4,sep="") ,hs4))
+```
+
+```{r}
+export_tariff<-export_tariff%>%
+  arrange(desc(effective_tariff))%>%
+  mutate(perc_tariff= effective_tariff*100)
+```
+
+```{r}
+export_tariff%>%
+  filter(hs4 =="0101")
+
+export_tariff%>%
+  filter(hs4 =="0101")%>%
+  ggplot(aes(x = Date, y = perc_tariff))+
+  geom_point()+
+  geom_smooth(method = "loess",color = "blue")
+```
+
