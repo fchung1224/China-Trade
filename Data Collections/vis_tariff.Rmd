@@ -22,7 +22,8 @@ export_tariff<-export_tariff%>%
 ```{r}
 export_tariff<-export_tariff%>%
   arrange(desc(effective_tariff))%>%
-  mutate(perc_tariff= effective_tariff*100)
+  mutate(perc_tariff= effective_tariff*100)%>%
+  mutate(Date = as.Date(Date))
 ```
 
 ```{r}
@@ -33,6 +34,6 @@ export_tariff%>%
   filter(hs4 =="0101")%>%
   ggplot(aes(x = Date, y = perc_tariff))+
   geom_point()+
-  geom_smooth(method = "loess",color = "blue")
+  geom_smooth()
 ```
 
