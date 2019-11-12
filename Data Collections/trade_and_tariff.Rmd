@@ -18,6 +18,11 @@ yearly<-read.csv("yearlyexports.csv")
 ```
 
 ```{r}
+yearly<-
+  yearly%>%
+  mutate(value = as.numeric(gsub(",","",value)))%>%
+  mutate(value = ifelse(is.na(value)==TRUE,0,value))
+
 tariff
 
 imposed_by_CHN<-
@@ -49,11 +54,71 @@ exports
 tariff<-
   tariff%>%
   mutate(Year = as.numeric(Year),
-         Month = as.numeric(Month))
+         Month = as.numeric(Month))%>%
+  mutate(hs6= ifelse(nchar(hs6)==5,paste("0",hs6,sep="") ,hs6))
+
+tariff
+```
+
+```{r}
+exports%>%
+  filter(str_detect(hs6, pattern = "[.]"))%>%
+  mutate(hs6 = substr(hs6, start =1, stop = 5))
+
+exports%>%
+  mutate(hs4 = substr(hs6, start =1, stop=4))%>%
+  filter(Year == 2015)%>%
+  group_by(Year,hs6)%>%
+  summarise(sum = sum(value))
 
 
-tariff_exports_US<-
-  tariff%>%
-  left_join(exports, by = c("Year","Month"))
+export_weights<-
+  yearly%>%
+  filter(Date==2015)%>%
+  mutate(hs4 = substr(hs6, start = 1, stop =4))
+
+export_weights
+
+hs4<-
+  yearly%>%
+  filter(size == 4, Date == 2015)%>%
+  select(number, Date,value)
+
+colnames(hs4) <- c("hs4","Year","yearly_exports")
+
+```
+
+
+```{r}
+weight<-export_weights%>%
+  left_join(hs4, by=c("hs4","hs4"))%>%
+  filter(size>4, yearly_exports>0)%>%
+  mutate(weight = value / yearly_exports)%>%
+  select(number, hs6, weight,yearly_exports,hs4)
+weight
+
+analysis<-tariff%>%
+  left_join(weight, by = c("hs6","hs6"))
+
+analysis
+
+effective_tariff_chn3<-
+  analysis%>%
+  select(hs4,hs6,Tariff, Date, tarrif_increase, weight)%>%
+  filter(Tariff == "chn3")
+
+effective_tariff_chn3<-effective_tariff_chn3%>%
+  mutate(efftariff = tarrif_increase*weight)%>%
+  group_by(hs4)%>%
+  summarise(effective_tariff = sum(efftariff))
+
+
+effective_tariff_chn3%>%
+  filter(effective_tariff>0)%>%
+  mutate(Tariff = "chn3")
+
+
+a<-analysis%>%
+  filter(hs4 == "0203")
 ```
 
