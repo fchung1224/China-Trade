@@ -88,7 +88,7 @@ final%>%
   filter(hs4 =="0101"|hs4 =="0202")%>%
   ggplot(aes(x = Date, y = effective_tariff, color = hs4))+
   geom_point()+
-  geom_line()+
+  geom_step()+
   ylim(0,1)
 ```
 
@@ -99,7 +99,7 @@ export_tariff%>%
   filter(hs4 =="0101"|hs4 =="0202")%>%
   ggplot(aes(x = Date, y = perc_change_tariff, color = hs4))+
   geom_point()+
-  geom_smooth()
+  geom_step()
 ```
 ```{r}
 hs_index<-
