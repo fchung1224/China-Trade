@@ -84,6 +84,13 @@ a<-rbind(chn16,chn3,chn34,chn60b1,chn60b2,chn75b1,chn75b2)
 final<-export_tariff%>%
   left_join(a)
 
+write.csv(final,"final.csv")
+```
+
+
+```{r}
+#EFFEctive TARIFF
+
 final%>%
   filter(hs4 =="0101"|hs4 =="0202")%>%
   ggplot(aes(x = Date, y = effective_tariff, color = hs4))+
@@ -93,6 +100,7 @@ final%>%
 ```
 
 ```{r}
+#PERCENTAGE CHANGE
 export_tariff
 
 export_tariff%>%
@@ -101,21 +109,39 @@ export_tariff%>%
   geom_point()+
   geom_step()
 ```
+
 ```{r}
 hs_index<-
   read.csv("hs_index.csv")
 
 hs_index_1<-hs_index%>%
   filter(Tier == 2)%>%
-  select(hs4,Product.Description)
+  select(hs4,Product.Description)%>%
+  mutate(hs2= substr(hs4,start=1,stop=2))
 
-hs_index_2<-
-  hs_index%>%
-  filter(Tier == 1)%>%
-  select(hs4,Product.Description)
 
 colnames(hs_index_2)<-
   c("hs2","TIER 1 DESCRIPTION")
+
+
+hs_index_1
+
+
+```
+
+    
+```{r}
+hs_index_2<-read.csv("hs_index_2.csv")
+
+hs_index_2<-
+  hs_index_2%>%
+  mutate(hs2 = ifelse(nchar(hs2)==1,paste("0",hs2,sep="") ,hs2))
+
+hs_index_final<-
+  hs_index_1%>%
+  left_join(hs_index_2)
+
+hs_index_final
 ```
 
 
