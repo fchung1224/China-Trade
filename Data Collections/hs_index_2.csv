@@ -1,0 +1,98 @@
+hs2,TIER 1 DESCRIPTION,Sector
+01,Live animals; animal products,Agricultural
+02,Meat and edible meat offal,Agricultural
+03,"Fish and crustaceans, molluscs and other acquatic invertebrates",Agricultural
+04,"Dairy produce; birds' eggs; natural honey; edible products of animal origin, not elsewhere specified or included",Agricultural
+05,"Products of animal origin, not elsewhere specified or included",Agricultural
+06,"Live trees and other plants; bulbs, roots and the like; cut flowers and ornamental foliage",Agricultural
+07,Edible vegetables and certain roots and tubers,Agricultural
+08,Edible fruit and nuts; peel of citrus fruit or melons,Agricultural
+09,"Coffee, tea, matT and spices",Agricultural
+10,Cereals,Agricultural
+11,Products of the milling industry; malt; starches; inulin; wheat gluten,Agricultural
+12,"Oil seeds and oleaginous fruits; miscellaneous grains, seeds and fruit; industrial or medicinal plants; straw and fodder",Agricultural
+13,"Lac; gums, resins and other vegetable saps and extracts",Agricultural
+14,Vegetable plaiting materials; vegetable products not elsewhere specified or included,Agricultural
+15,Animal or vegetable fats and oils and their cleavage products; prepared edible fats; animal or vegetable waxes,Agricultural
+16,"Preparations of meat, of fish or of crustaceans, molluscs or other aquatic invertebrates",Agricultural
+17,Sugars and sugar confectionery,Agricultural
+18,Cocoa and cocoa preparations,Agricultural
+19,"Preparations of cereals, flour, starch or milk; pastrycooks' products",Agricultural
+20,"Preparations of vegetables, fruit, nuts or other parts of plants",Agricultural
+21,Miscellaneous edible preparations,Agricultural
+22,"Beverages, spirits and vinegar",Agricultural
+23,Residues and waste from the food industries; prepared animal fodder,Chemicals
+24,Tobacco and manufactured tobacco substitutes,Chemicals
+25,"Salt; sulphur; earths and stone; plastering materials, lime and cement",Minerals
+26,"Ores, slag and ash",Minerals
+27,"Mineral fuels, mineral oils and products of their distillation; bituminous substances; mineral waxes",Minerals
+28,"Inorganic chemicals; organic or inorganic compounds of precious metals, of rare-earth metals, of radioactive elements or of isotopes",Chemicals
+29,Organic chemicals,Chemicals
+30,Pharmaceutical products,Chemicals
+31,Fertilisers,Chemicals
+32,"Tanning or dyeing extracts; tannins and their derivatives; dyes, pigments and other colouring matter; paints and varnishes; putty and other mastics; inks",Chemicals
+33,"Essential oils and resinoids; perfumery, cosmetic or toilet preparations",Chemicals
+34,"Soap, organic surface-active agents, washing preparations, lubricating preparations, artificialwaxes, prepared waxes, polishing or scouring preparations, candles and similar articles, modelling pastes, dental waxes and dental preparations with a basi",Chemicals
+35,Albuminoidal substances; modified starches; glues; enzymes,Chemicals
+36,Explosives; pyrotechnic products; matches; pyrophoric alloys; certain combustible preparations,Chemicals
+37,Photographic or cinematographic goods,Entretainment
+38,Miscellaneous chemical products,Chemicals
+39,Plastics and articles thereof,Chemicals
+40,Rubber and articles thereof,Chemicals
+41,Raw hides and skins(other than furskins) and leather,Textiles
+42,"Articles of leather; saddlery and harness; travel goods, handbags and similar containers; articles of animal gut (other than silk-worm gut)",Textiles
+43,Furskins and artificial fur; manufactures thereof,Textiles
+44,Wood and articles of wood; wood charcoal,Forest
+45,Cork and articles of cork,Forest
+46,"Manufactures of straw, of esparto or of other plaiting materials; basketware and wickerwork",Forest
+47,Pulp of wood or of other fibrous cellulosic material; recovered (waste and scrap) of paper or paperboard,Waste
+48,"Paper and paperboard; articles of paper pulp, of paper or of paperboard",Forest
+49,"Printed books, newspapers, pictures and other products of the printing industry; manuscripts, typescripts and plans",Entretainment
+50,Silk,Textiles
+51,"Wool, fine or coarse animal hair; horsehair yarn and woven fabric",Textiles
+52,Cotton,Textiles
+53,Other vegetable textile fibres; paper yarn and woven fabrics of paper yarn,Textiles
+54,Man-made filaments; strip and the like of man-made textile materials,Textiles
+55,Man-made staple fibres,Textiles
+56,"Wadding, felt and nonwovens; special yarns; twine, cordage, ropes and cables and articles thereof",Textiles
+57,Carpets and other textile floor coverings,Textiles
+58,Special woven fabrics; tufted textile fabrics; lace; tapestries; trimmings; embroidery,Textiles
+59,"Impregnated, coated, covered or laminated textile fabrics; textile articles of a kind suitable for industrial use",Textiles
+60,Knitted or crocheted fabrics,Textiles
+61,"Articles of apparel and clothing accessories, knitted or crocheted",Apparel
+62,"Articles of apparel and clothing accessories, not knitted or crocheted",Apparel
+63,Other made up textile articles; sets; worn clothing and worn textile articles; rags,Apparel
+64,"Footwear, gaiters and the like; parts of such articles",Apparel
+65,Headgear and parts thereof,Apparel
+66,"Umbrella, sun umbrellas, walking-sticks, seat-sticks, whips, riding-crops and parts thereof",Apparel
+67,Prepared feathers and down and articles made of feathers or of down; artificial flowers; articles of human hair,Apparel
+68,"Articles of stone, plaster, cement, asbestos, mica or similar materials",Materials
+69,Ceramic products,Materials
+70,Glass and glassware,Materials
+71,"Natural or cultured pearls, precious or semi-precious stones, precious metals, metals cladwith precious metal, and articles thereof; imitation jewellery; coin",Materials
+72,Iron and steel,Minerals
+73,Articles of iron or steel,Minerals
+74,Copper and articles thereof,Minerals
+75,Nickel and articles thereof,Minerals
+76,Aluminum and articles thereof,Minerals
+78,Lead and articles thereof,Minerals
+79,Zinc and articles thereof,Minerals
+80,Tin and articles thereof,Minerals
+81,Other base metals; cermets; articles thereof,Minerals
+82,"Tools, implements, cutlery, spoons and forks, of base metal; parts thereof of base metal",Manufacture
+83,Miscellaneous articles of base metal,Manufacture
+84,"Nuclear reactors, boilers, machinery and mechanical appliances; parts thereof",Machinery
+85,"Electrical machinery and equipment and parts thereof; sound recorders and reproducers, television image and sound recorders and reproducers, and parts and accessories of such articles",Machinery
+86,"Railway or tramway locomotives, rolling-stock and parts thereof; railway or tramway track fixtures and fittings and parts thereof; mechanical (including electro-mechanical) traffic signalling equipment of all kinds",Manufacture
+87,"Vehicles other than railway or tramway rolling-stock, and parts and accessories thereof",Transportation
+88,"Aircraft, spacecraft, and parts thereof",Transportation
+89,"Ships, boats and floating structures",Transportation
+90,"Optical, photographic, cinematographic, measuring, checking, precision, medical or surgical instruments and apparatus; parts and accessories thereof",Machinery
+91,Clocks and watches and parts thereof,Manufacture
+92,Musical instruments; parts and accessories of such articles,Entretainment
+93,Arms and ammunition; parts and accessories thereof,Military
+94,"Furniture; bedding, mattresses, mattress supports, cushions and similar stuffed furnishings; lamps and lighting fittings, not elsewhere specified or included; illuminated signs, illuminated name-plates and the like; prefabricated buildings",Manufacture
+95,"Toys, games and sports requisites; parts and accessories thereof",Entretainment
+96,Miscellaneous manufactured articles,Miscellaneous
+97,"Works of art, collectors' pieces and antiques",Entretainment
+99,Commodities not specified according to kind,Miscellaneous
