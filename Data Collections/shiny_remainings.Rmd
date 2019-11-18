@@ -1,0 +1,111 @@
+---
+title: "shiny_trash"
+output: html_document
+---
+
+```{r}
+library(shiny)
+library(FNN)
+library(ISLR)
+library(ggplot2)
+library(dplyr)
+```
+
+
+```{r}
+# Load glucose data
+plot_data <- read.csv("https://www.macalester.edu/~ajohns24/data/glucose_experiment.csv")
+
+# Define a KNN plotting function
+plot_knn <- function(k){
+  time_seq <- seq(-0.2, 5, length = 5000)
+  knn_mod  <- knn.reg(train = plot_data$Time, test = data.frame(time_seq), y = plot_data$glucose, k = k)
+  knn_results <- data.frame(time_seq, pred_2 = knn_mod$pred)
+  ggplot(plot_data, aes(x = Time, y = glucose)) + 
+    geom_point() + 
+    geom_line(data = knn_results, aes(x = time_seq, y = pred_2), color = "red") + 
+    labs(title = paste("K = ", k)) 
+}
+
+# Build the shiny server
+server_KNN <- function(input, output) {
+  output$knnpic <- renderPlot({
+    plot_knn(k = input$kTune)
+  })
+}
+
+
+# Build the shiny user interface
+ui_KNN <- fluidPage(
+  sidebarLayout(
+    sidebarPanel(
+      h4("Tune the KNN algorithm:"), 
+      sliderInput("kTune", "K", min = 1, max = 14, value = 1)
+    ),
+    mainPanel(
+      h4("KNN Plot:"), 
+      plotOutput("knnpic")
+    )
+  )
+)
+
+
+# Run the shiny app!
+shinyApp(ui = ui_KNN, server = server_KNN)
+```
+
+
+```{r}
+#TESTING
+ui<-fluidPage(
+  titlePanel("US EXports to China"),
+  
+  dateRangeInput(inputId = "date",
+              label = "Choose Dates",
+              start = min(Exports$Date),
+              end = max(Exports$Date), 
+              min = min(Exports$Date), 
+              max =max(Exports$Date),
+              format = "yyyy-mm-dd"),
+              
+  plotOutput("tariff")
+)
+
+server<-function(input,output){
+  #output$tariff<-renderPlot(  )
+  output$dateRangeText<- renderText({
+ 
+  as.character(input$dateRange)
+     
+}
+)
+shinyApp(ui = ui, server = server)
+```
+
+
+```{r}
+#FINAL
+library(shiny)
+
+
+ui<-fluidPage(title = "TARRIFS AND TRADE",
+              #checkboxGroupInput(inputId = "Country", label = "Choose a country"), #US/CHINA
+              #radioButtons(),       #sector
+              #radioButtons(),       #product
+              #dateRangeInput(),   #time
+              
+              #plotOutput(outputId = ),
+              
+              )  
+
+server<- function(input, output){
+  #renderDataTable()
+  
+  
+}
+
+shinyApp(ui = ui, server = server)
+
+#input$ID --> current value of the input
+
+```
