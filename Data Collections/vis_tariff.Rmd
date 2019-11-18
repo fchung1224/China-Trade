@@ -141,7 +141,30 @@ hs_index_final<-
   hs_index_1%>%
   left_join(hs_index_2)
 
-hs_index_final
+names<-hs_index_final%>%
+  select(hs4, TIER.1.DESCRIPTION,Sector,Product.Description)
+
+write.csv(names,"names.csv")
 ```
 
+```{r}
+export_tariff_final<-export_tariff%>%
+  left_join(names)
+export_tariff_final
 
+write.csv(export_tariff_final,"export_tariff_final.csv")
+
+```
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(stringr)
+library(shiny)
+library(shinydashboard)
+library(readr)
+library(DT)
+library(scales)
+library(lubridate)
+```

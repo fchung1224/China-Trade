@@ -1,0 +1,118 @@
+---
+title: "shinyapp_tariff"
+output: html_document
+author: "Federico Chung"
+runtime: shiny
+---
+
+INPUTS:
+country
+sector(industry)
+-ALL (CATEGORY NEEDED)
+product
+-ALL (CATEGORY NEEDED)
+
+
+time
+
+OUTPUT:
+Tariff
+Exports
+Sentiment
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(stringr)
+library(shiny)
+library(shinydashboard)
+library(readr)
+library(DT)
+library(scales)
+library(lubridate)
+```
+
+```{r}
+CH_tariff<-read.csv("export_tariff_final.csv")
+exports<-read.csv("exports.csv")
+
+CH_tariff<-
+  US_tariff%>%
+  mutate(Date = as.Date(Date))
+
+Exports<-
+  exports%>%
+  mutate(Date= as.Date(Date))
+```
+
+
+
+
+
+
+```{r}
+#TESTING
+ui<-fluidPage(
+  dateRangeInput(inputId = "date",
+              label = "Choose Dates",
+              start = min(Exports$Date),
+              end = max(Exports$Date), 
+              min = min(Exports$Date), 
+              max =max(Exports$Date),
+              format = "yyyy-mm-dd"),
+              
+  plotOutput("tariff")
+)
+
+server<-function(input,output){
+  #output$tariff<-renderPlot(  )
+  output$dateRangeText<- renderText({
+ 
+  as.character(input$dateRange)
+     
+}
+)
+shinyApp(ui = ui, server = server)
+```
+
+
+```{r}
+#FINAL
+library(shiny)
+
+
+ui<-fluidPage(title = "TARRIFS AND TRADE",
+              #checkboxGroupInput(inputId = "Country", label = "Choose a country"), #US/CHINA
+              #radioButtons(),       #sector
+              #radioButtons(),       #product
+              #dateRangeInput(),   #time
+              
+              #plotOutput(outputId = ),
+              
+              )  
+
+server<- function(input, output){
+  #renderDataTable()
+  
+  
+}
+
+shinyApp(ui = ui, server = server)
+
+#input$ID --> current value of the input
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
