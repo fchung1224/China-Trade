@@ -30,6 +30,7 @@ library(readr)
 library(DT)
 library(scales)
 library(lubridate)
+library(plotly)
 ```
 
 ```{r}
@@ -81,6 +82,7 @@ Exports<-Exports%>%
 Total
 
 exports<-rbind(Exports, Total)
+CH_tariff
 ```
 
 
@@ -97,16 +99,36 @@ plot_exports<- function(product){
     filter(TIER.1.DESCRIPTION == product)%>%
     group_by(Date)%>%
     mutate(value = sum(value))
-  ggplot(export_data, aes(x = Date, value))+
-    geom_smooth(method = "loess")+
-    geom_point()+
+  
+  
+  p<- ggplot(export_data, aes(x = Date, y = value))+
+    geom_line()+
     labs(title = paste("Exports of ",product))
+  
+  ggplotly(p)
+}
+
+plot_tariffs<- function(product){
+  EXP_Tariff<-
+    CH_tariff%>%
+    filter(TIER.1.DESCRIPTION %in% product)%>%
+    filter()
+  
+  p<- ggplot(EXP_Tariff, aes(x = Date, y = effective_tariff_increase, color = Product.Description))+
+    geom_step()+
+    geom_point()
+  
+  ggplotly(p)
 }
 
 # Build the shiny server
 server <- function(input, output) {
-  output$plot <- renderPlot({
+  output$plot <- renderPlotly({
     plot_exports(product = input$product)
+  })
+  
+  output$tariffplot<- renderPlotly({
+    plot_tariffs(product = input$product)
   })
 }
 
@@ -121,7 +143,8 @@ ui <- fluidPage(
   ),
   mainPanel(
     h4("Plot:"),
-    plotOutput("plot")
+    plotlyOutput("plot"),
+    plotlyOutput("tariffplot")
   )
 )
 
@@ -136,33 +159,72 @@ shinyApp(ui = ui, server = server)
 ```{r}
 exports
 
-exports%>%
-  filter(TIER.1.DESCRIPTION == "Live animals; animal products")%>%
+p<-exports%>%
+  filter(TIER.1.DESCRIPTION == "all")%>%
   group_by(Date)%>%
   mutate(value = sum(value))%>%
   ggplot(aes(x = Date, y = value))+
-  geom_point()+
   geom_line()
 
-
+ggplotly(p)
 
 ```
-
 
 
 
 
 ```{r}
-library(forecast)
-library(TTR)
+#Multiple Lines in one graph**
 
-ggplot(data = exports)+
-  geom_line(aes(x =decimal_date(Date), y= value))+
-  geom_line(aes(y = SMA(value,3), x = decimal_date(Date)), color = "red")
 
-Trade_Vis
+#data --> includes all*
+exports
+
+#Define a plotting function
+
+if(interactive()){
+
+plot_exports<- function(product){
+  export_data<-
+    exports%>%
+    filter(TIER.1.DESCRIPTION %in% product)%>%
+    group_by(Date,TIER.1.DESCRIPTION)%>%
+    mutate(value = sum(value))
+  ggplot(export_data, aes(x = Date, y = value, color = product))+
+    geom_line()+
+    labs(title = paste("Exports of ",product))
+}
+
+# Build the shiny server
+server <- function(input, output, session) {
+  output$plot <- renderPlot({
+    plot_exports(product = input$product)
+  })
+}
+
+# Build the shiny user interface
+ui <- fluidPage(
+  radioButtons(
+    selectizeInput(inputId = "product",
+    label = "Select Products:",
+    choices = levels(exports$TIER.1.DESCRIPTION)
+    
+    )
+    
+    
+    
+  ),
+  mainPanel(
+    h4("Plot:"),
+    plotOutput("plot")
+  )
+)
+
+}
+
+# Run the shiny app!
+shinyApp(ui = ui, server = server)
 ```
-
 
 
 
