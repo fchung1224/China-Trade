@@ -152,6 +152,17 @@ exports%>%
 
 
 
+```{r}
+library(forecast)
+library(TTR)
+
+ggplot(data = exports)+
+  geom_line(aes(x =decimal_date(Date), y= value))+
+  geom_line(aes(y = SMA(value,3), x = decimal_date(Date)), color = "red")
+
+Trade_Vis
+```
+
 
 
 
