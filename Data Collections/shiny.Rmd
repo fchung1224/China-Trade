@@ -48,7 +48,7 @@ names<-names%>%
 
 ```{r}
 CH_tariff<-
-  US_tariff%>%
+  CH_tariff%>%
   mutate(Date = as.Date(Date))
 
 Exports<-
@@ -83,6 +83,19 @@ Total
 
 exports<-rbind(Exports, Total)
 CH_tariff
+stuff<-
+  CH_tariff%>%
+  filter(TIER.1.DESCRIPTION == "all")
+
+  p<- ggplot(stuff, aes(x = Date, y = effective_tariff_increase, color = Product.Description))+
+    geom_step()+
+    geom_point()+
+    ylim(c(0,1))
+    
+  
+  ggplotly(p)
+  
+  tariff1<-as.character(CH_tariff$Tariff[1])
 ```
 
 
@@ -90,6 +103,22 @@ CH_tariff
 ```{r}
 #data --> includes all*
 exports
+
+date1<-CH_tariff$Date[1]
+date2<-CH_tariff$Date[2]
+date3<-CH_tariff$Date[3]
+date4<-CH_tariff$Date[4]
+date5<-CH_tariff$Date[5]
+date6<-CH_tariff$Date[6]
+date7<-CH_tariff$Date[7]
+
+tariff1<-as.character(CH_tariff$Tariff[1])
+tariff2<-as.character(CH_tariff$Tariff[2])
+tariff3<-as.character(CH_tariff$Tariff[3])
+tariff4<-as.character(CH_tariff$Tariff[4])
+tariff5<-as.character(CH_tariff$Tariff[5])
+tariff6<-as.character(CH_tariff$Tariff[6])
+tariff7<-as.character(CH_tariff$Tariff[7])
 
 #Define a plotting function
 
@@ -101,9 +130,10 @@ plot_exports<- function(product){
     mutate(value = sum(value))
   
   
-  p<- ggplot(export_data, aes(x = Date, y = value))+
+  p<- ggplot(export_data, aes(x = decimal_date(Date), y = value))+
     geom_line()+
-    labs(title = paste("Exports of ",product))
+    labs(title = paste("Exports of ",product))+
+    geom_vline(xintercept = decimal_date(date1), color = "red")
   
   ggplotly(p)
 }
@@ -116,7 +146,9 @@ plot_tariffs<- function(product){
   
   p<- ggplot(EXP_Tariff, aes(x = Date, y = effective_tariff_increase, color = Product.Description))+
     geom_step()+
-    geom_point()
+    geom_point()+
+    ylim(c(0,1))+
+    theme(legend.position = "none")
   
   ggplotly(p)
 }
