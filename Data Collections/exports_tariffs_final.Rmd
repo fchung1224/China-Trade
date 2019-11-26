@@ -87,4 +87,11 @@ export_tariff_final<-
 write.csv(export_tariff_final,"export_tariff_final.csv")
 ```
 
+###HS2
+
+
+
+
+
+
 
