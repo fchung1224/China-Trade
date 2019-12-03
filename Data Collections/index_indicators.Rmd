@@ -17,6 +17,50 @@ library(dplyr)
 #S&P 500
 
 ```{r}
-
+sp500<-read.csv("SP500.csv")
+XCEM<-read.csv("XCEM.csv") #Columbia EM Core ex-China ETF
+MCHI<-read.csv("MCHI.csv") #Exposure to large and mid-sized companies in China
+CH_tariff<- read.csv("export_tariff_final.csv")
 ```
+
+```{r}
+sp500<-
+  sp500%>%
+  select(Date,Adj.Close)%>%
+  mutate(Date = as.Date(Date))%>%
+  mutate(Index= "SP500")
+
+XCEM<-
+  XCEM%>%
+  select(Date,Adj.Close)%>%
+  mutate(Date = as.Date(Date))%>%
+  mutate(Index= "XCEM")
+
+MCHI<-
+  MCHI%>%
+  select(Date,Adj.Close)%>%
+  mutate(Date = as.Date(Date))%>%
+  mutate(Index= "MCHI")
+```
+
+```{r}
+date1<- CH_tariff$Date[1]
+date1
+```
+
+
+```{r}
+ggplot(sp500, aes(x = Date, y = Adj.Close, color = Index))+
+  geom_line()+
+  geom_vline(xintercept = as.Date(date1))
+
+ggplot(XCEM, aes(x = Date, y = Adj.Close, color = Index))+
+  geom_line()+
+  geom_vline(xintercept = as.Date(date1))
+
+ggplot(MCHI, aes(x = Date, y = Adj.Close, color = Index))+
+  geom_line()+
+  geom_vline(xintercept = as.Date(date1))
+```
+
 

@@ -30,7 +30,7 @@ library(readr)
 library(DT)
 library(scales)
 library(lubridate)
-library(plotly)
+ library(plotly)
 ```
 
 ```{r}
