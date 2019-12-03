@@ -3,26 +3,59 @@ title: "imports"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(stringr)
+
 ```
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+```{r}
+exports<-read.csv("exports.csv")
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+data<-read.csv("imports.csv")
+data
+data<-data%>%
+  mutate(Year = gsub("[^0-9.]", "",  Date))%>%
+  mutate(Month = gsub("[^a-zA-Z]", "", Date))
 
-```{r cars}
-summary(cars)
+yearly<-
+  data%>%
+  filter(nchar(Year)==4)
+
+imp<-
+  data%>%
+  anti_join(yearly)
+
+imp<-imp%>%
+  mutate(Month = match(Month,month.abb))%>%
+  mutate(Year = (paste("20",Year,sep = "")))%>%
+  mutate(Month = as.character(Month))%>%
+  mutate(Imports = as.numeric(gsub(",","",Imports)))%>%
+  mutate(Date = paste(Year,Month,"01",sep = "-"))%>%
+  mutate(Date = as.Date(Date, tryFormats = "%Y-%m-%d"))
+
+exp<-exports%>%
+  group_by(Date)%>%
+  summarise(exports = sum(value))%>%
+  mutate(Date = as.Date(Date))%>%
+  mutate(Type = "Exports")
+
+colnames(exp)<-c("Date", "Value", "Type")
+
+exp
+
+imp<-imp%>%select(Date, Imports)%>%
+  mutate(Type = "Imports")
+
+colnames(imp)<-c("Date", "Value", "Type")
+
+all<-rbind(exp,imp)
+
+p<-all%>%
+  ggplot(aes(x = Date, y = Value, color = Type))+
+  geom_line()
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
